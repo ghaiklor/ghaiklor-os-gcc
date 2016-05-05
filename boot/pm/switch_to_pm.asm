@@ -7,7 +7,7 @@ switch_to_pm:
 	;; clear all interrupts
 	cli
 
-	;; load our GDT
+	;; load our Global Descriptor Table
 	lgdt [gdt_descriptor]
 
 	;; switch to protected mode

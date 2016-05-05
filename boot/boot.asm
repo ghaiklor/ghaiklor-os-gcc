@@ -1,4 +1,5 @@
 [org 0x7C00]
+[bits 16]
 
 mov bx, BOOT_SECTOR_FOUND_MSG
 call print_string

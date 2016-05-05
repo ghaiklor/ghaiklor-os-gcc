@@ -3,6 +3,8 @@
 ;; https://en.wikipedia.org/wiki/INT_13H
 ;; http://stanislavs.org/helppc/int_13-2.html
 
+[bits 16]
+
 disk_read:
 	;; store all register values
 	pusha

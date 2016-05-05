@@ -2,6 +2,8 @@
 ;; Describes memory segments for the CPU
 ;; http://wiki.osdev.org/Global_Descriptor_Table
 
+[bits 16]
+
 gdt_start:
 gdt_null:
 	dd 0x0

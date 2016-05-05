@@ -3,7 +3,7 @@ print_hex:
 	;; store all register values
 	;; cx is our counter in the loop
 	pusha
-	mov cx, 0
+	xor cx, cx
 
 print_hex_loop:
 	;; if counter is equal to 4

@@ -1,14 +1,18 @@
 [org 0x7C00]
 
 mov bx, HELLO
-call print
+call print_string
 
 mov bx, GOODBYE
-call print
+call print_string
+
+mov dx, 0x1234
+call print_hex
 
 jmp $
 
-%include "boot/print.asm"
+%include "boot/print_string.asm"
+%include "boot/print_hex.asm"
 
 HELLO: db "Hello, World", 0
 GOODBYE: db "Goodbye", 0

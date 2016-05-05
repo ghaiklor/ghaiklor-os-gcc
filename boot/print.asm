@@ -1,28 +1,25 @@
-print:
-	pusha
-
-start:
+print_from_bx:
+	;; get first char from address at bx
+	;; if char is equal to null-terminating symbol
+	;; jump to return
 	mov al, [bx]
 	cmp al, 0
-	je done
+	je return
 
+	;; if char is exists
+	;; prepare BIOS interrupt 0x0E for print
 	mov ah, 0x0E
 	int 0x10
+
+	;; offset at bx + 1
+	;; so we have the next char from string
 	add bx, 1
-	jmp start
+	jmp print_from_bx
 
-done:
+return:
 	popa
 	ret
 
-print_nl:
+print:
 	pusha
-
-	mov ah, 0x0E
-	mov al, 0x0A
-	int 0x10
-	mov al, 0x0D
-	int 0x10
-
-	popa
-	ret
+	jmp print_from_bx

@@ -1,4 +1,5 @@
 print_hex:
+	;; HEX value must be in dx
 	;; store all register values
 	;; cx is our counter in the loop
 	pusha
@@ -18,7 +19,7 @@ print_hex_loop:
 	;; convert the last char to ASCII code
 	add al, 0x30
 
-	;; if result is number
+	;; if result is number [30-39]
 	;; write ASCII code to ret value
 	cmp al, 0x39
 	jle print_hex_write_to_ret
@@ -28,7 +29,7 @@ print_hex_loop:
 	add al, 7
 
 print_hex_write_to_ret:
-	;; store address of last char in ret
+	;; store address of last char in ret value
 	mov bx, PRINT_HEX_OUT + 5
 
 	;; sub our index value

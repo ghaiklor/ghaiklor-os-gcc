@@ -1,4 +1,5 @@
 print_string:
+	;; address of string must be in bx
 	;; store all register values
 	pusha
 

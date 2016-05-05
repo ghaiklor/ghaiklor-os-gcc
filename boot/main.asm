@@ -2,18 +2,21 @@
 
 mov bx, BOOT_SECTOR_FOUND_MSG
 call print_string
+call print_nl
 
 mov bp, 0x9000
 mov sp, bp
 
 mov bx, BOOT_SECTOR_REAL_MODE_MSG
 call print_string
+call print_nl
 
 call switch_to_pm
 
 jmp $
 
 %include "boot/print_string.asm"
+%include "boot/print_nl.asm"
 %include "boot/print_string_pm.asm"
 %include "boot/print_hex.asm"
 %include "boot/disk_read.asm"

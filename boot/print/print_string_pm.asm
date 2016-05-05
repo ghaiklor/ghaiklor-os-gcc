@@ -1,3 +1,6 @@
+;; Routine for printing strings in Protected Mode
+;; Accepts pointer to string in memory in ebx register
+
 [bits 32]
 	
 VIDEO_MEMORY equ 0xB8000

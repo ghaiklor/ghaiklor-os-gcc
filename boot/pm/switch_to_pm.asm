@@ -1,3 +1,6 @@
+;; Routine to switch on Protected Mode
+;; http://wiki.osdev.org/Protected_Mode
+	
 [bits 16]
 
 switch_to_pm:

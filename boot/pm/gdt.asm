@@ -1,8 +1,13 @@
+;; Global Descriptor Table
+;; Describes memory segments for the CPU
+;; http://wiki.osdev.org/Global_Descriptor_Table
+
 gdt_start:
 gdt_null:
 	dd 0x0
 	dd 0x0
 
+;; Code Segment
 gdt_code:
 	dw 0xFFFF
 	dw 0x0
@@ -11,6 +16,7 @@ gdt_code:
 	db 11001111b
 	db 0x0
 
+;; Data Segment
 gdt_data:
 	dw 0xFFFF
 	dw 0x0

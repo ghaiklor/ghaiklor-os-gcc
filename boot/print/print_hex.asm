@@ -1,5 +1,7 @@
+;; Routine for printing HEX values as ASCII
+;; Accepts HEX value in dx register
+
 print_hex:
-	;; HEX value must be in dx
 	;; store all register values
 	;; cx is our counter in the loop
 	pusha

@@ -1,3 +1,5 @@
+;; Routine for printing new line
+	
 print_nl:
 	;; store all register values
 	pusha

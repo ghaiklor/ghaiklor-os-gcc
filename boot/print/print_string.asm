@@ -1,5 +1,7 @@
+;; Routine for printing string in Real Mode
+;; Accepts pointer to memory where string is stored in bx
+
 print_string:
-	;; address of string must be in bx
 	;; store all register values
 	pusha
 

@@ -1,10 +1,14 @@
+;; Implementation for sector-based hard disk and floppy disk read\write
+;; It uses BIOS INT 13h
+;; https://en.wikipedia.org/wiki/INT_13H
+;; http://stanislavs.org/helppc/int_13-2.html
+
 disk_read:
 	;; store all register values
 	pusha
 	push dx
 
 	;; prepare data for reading the disk
-	;; so BIOS interrupt know what to read
 	;; al = number of sectors to read (1 - 128)
 	;; ch = track/cylinder number
 	;; dh = head number
@@ -31,8 +35,10 @@ disk_read:
 	ret
 
 disk_read_error:
+	call print_nl
 	mov bx, DISK_READ_ERROR_MSG
 	call print_string
+	call print_nl
 	jmp $
 
 DISK_READ_ERROR_MSG: db "Disk read error!", 0

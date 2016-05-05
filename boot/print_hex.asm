@@ -13,8 +13,8 @@ print_hex_loop:
 
 	;; otherwise, process hex value as string
 	;; get last char of HEX value
-	mov ax, dx
-	and ax, 0x000F
+	mov al, dl
+	and al, 0x0F
 
 	;; convert the last char to ASCII code
 	add al, 0x30

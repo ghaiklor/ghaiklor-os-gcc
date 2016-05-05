@@ -3,6 +3,9 @@
 mov bx, BOOT_FOUND_MESSAGE
 call print_string
 
+mov dx, 0x1A2B
+call print_hex
+
 jmp $
 
 %include "boot/print_string.asm"

@@ -46,7 +46,7 @@ print_hex_write_to_ret:
 	ror dx, 4
 
 	;; increment loop counter
-	add cx, 1
+	inc cx
 	jmp print_hex_loop
 
 print_hex_ret:
@@ -54,6 +54,7 @@ print_hex_ret:
 	;; and call usual print_string
 	mov bx, PRINT_HEX_OUT
 	call print_string
+	call print_nl
 	popa
 	ret
 

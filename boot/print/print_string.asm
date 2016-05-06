@@ -22,7 +22,7 @@ print_string_loop:
 
 	;; offset at bx + 1
 	;; so we have the next char from string
-	add bx, 1
+	inc bx
 	jmp print_string_loop
 
 print_string_ret:

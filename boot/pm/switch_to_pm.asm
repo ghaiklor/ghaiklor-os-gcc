@@ -14,6 +14,10 @@ switch_to_pm:
 	mov eax, cr0
 	or eax, 0x1
 	mov cr0, eax
+
+	;; far jump to 32 bit instructions
+	;; so we can be sure processor has done
+	;; all other operations before switch
 	jmp CODE_SEG:init_pm
 
 [bits 32]

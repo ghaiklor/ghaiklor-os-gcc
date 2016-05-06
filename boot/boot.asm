@@ -1,3 +1,7 @@
+;; Boot sector
+;; Switches processor to 32-bit Protected Mode
+;; Loads kernel from the disk
+
 [org 0x7C00]
 [bits 16]
 
@@ -20,14 +24,6 @@ call switch_to_pm
 
 jmp $
 
-%include "boot/disk/disk_read.asm"
-%include "boot/pm/gdt.asm"
-%include "boot/pm/switch_to_pm.asm"
-%include "boot/print/print_hex.asm"
-%include "boot/print/print_nl.asm"
-%include "boot/print/print_string.asm"
-%include "boot/print/print_string_pm.asm"
-
 [bits 32]
 
 begin_pm:
@@ -35,6 +31,14 @@ begin_pm:
 	call print_string_pm
 
 	jmp $
+
+%include "boot/disk/disk_read.asm"
+%include "boot/pm/gdt.asm"
+%include "boot/pm/switch_to_pm.asm"
+%include "boot/print/print_hex.asm"
+%include "boot/print/print_nl.asm"
+%include "boot/print/print_string.asm"
+%include "boot/print/print_string_pm.asm"
 
 BOOT_SECTOR_FOUND_MSG: db "Found boot sector, loading...", 0
 BOOT_SECTOR_REAL_MODE_MSG: db "Started in 16-bit Real Mode", 0

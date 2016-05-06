@@ -1,5 +1,7 @@
 ;; Routine for printing strings in Protected Mode
 ;; Accepts pointer to string in memory in ebx register
+;; Prints string direct to video memory
+;; Because we don't have BIOS interrupts in Protected Mode
 
 [bits 32]
 	

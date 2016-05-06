@@ -62,10 +62,6 @@ load_kernel_into_memory:
 [bits 32]
 
 begin_pm:
-	;; say that we successfully landed in Protected Mode
-	mov ebx, BOOT_SECTOR_PROTECTED_MODE_MSG
-	call print_string_pm
-
 	;; call our loaded kernel
 	call KERNEL_OFFSET
 	jmp $
@@ -83,7 +79,6 @@ BOOT_SECTOR_FOUND_MSG: db "Found boot sector, loading...", 0
 BOOT_SECTOR_REAL_MODE_MSG: db "Started in 16-bit Real Mode", 0
 BOOT_SECTOR_LOADING_KERNEL_INTO_MEMORY_MSG: db "Loading kernel into the memory...", 0
 BOOT_SECTOR_START_PROTECTED_MODE_MSG: db "Trying to load 32-bit Protected Mode...", 0
-BOOT_SECTOR_PROTECTED_MODE_MSG: db "Successfully landed in 32-bit Protected Mode", 0
 
 times 510 - ($-$$) db 0
 dw 0xAA55

@@ -69,10 +69,8 @@ begin_pm:
 %include "boot/disk/disk_read.asm"
 %include "boot/pm/gdt.asm"
 %include "boot/pm/switch_to_pm.asm"
-%include "boot/print/print_hex.asm"
 %include "boot/print/print_nl.asm"
 %include "boot/print/print_string.asm"
-%include "boot/print/print_string_pm.asm"
 
 BOOT_DRIVE: db 0
 BOOT_SECTOR_FOUND_MSG: db "Found boot sector, loading...", 0

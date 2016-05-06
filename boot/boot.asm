@@ -41,7 +41,6 @@ call print_nl
 
 ;; switch to Protected Mode
 call switch_to_pm
-
 jmp $
 
 ;; routine reads kernel from disk into memory

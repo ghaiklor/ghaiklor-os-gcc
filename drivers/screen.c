@@ -33,12 +33,10 @@ void print_at(char *message, int col, int row) {
 
 // Clear the entire screen and positioning cursor to (0, 0)
 void clear_screen() {
-  int screen_size = MAX_COLS * MAX_ROWS;
-  char *screen = (unsigned char*) VIDEO_ADDRESS;
-
-  for (int i = 0; i < screen_size; i++) {
-    screen[i * 2] = ' ';
-    screen[i * 2 + 1] = WHITE_ON_BLACK;
+  for (int row = 0; row < MAX_ROWS; row++) {
+    for (int col = 0; col < MAX_COLS; col++) {
+      print_char(' ', col, row, WHITE_ON_BLACK);
+    }
   }
 
   set_cursor_offset(get_offset(0, 0));

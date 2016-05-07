@@ -19,7 +19,7 @@ os-image.bin: boot/boot.bin kernel/kernel.bin
 	cat $^ > os-image.bin
 
 boot/boot.bin: boot/boot.asm
-	${ASM} $< -f elf64 -o $@
+	${ASM} $< -f bin -o $@
 
 kernel/kernel.bin: boot/kernel.o ${OBJ}
 	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary

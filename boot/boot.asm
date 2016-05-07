@@ -43,6 +43,13 @@ call print_nl
 call switch_to_pm
 jmp $
 
+[bits 32]
+
+begin_pm:
+	;; call our loaded kernel
+	call KERNEL_OFFSET
+	jmp $
+
 ;; routine reads kernel from disk into memory
 load_kernel_into_memory:
 	;; store all register values
@@ -57,13 +64,6 @@ load_kernel_into_memory:
 	;; restore register values and ret
 	popa
 	ret
-
-[bits 32]
-
-begin_pm:
-	;; call our loaded kernel
-	call KERNEL_OFFSET
-	jmp $
 
 %include "boot/disk/disk_read.asm"
 %include "boot/pm/gdt.asm"

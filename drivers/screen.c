@@ -1,3 +1,4 @@
+#include "ports.h"
 #include "screen.h"
 
 int print_char(char character, int col, int row, char attribute);
@@ -7,6 +8,7 @@ int get_offset(int col, int row);
 int get_row_from_offset(int offset);
 int get_col_from_offset(int offset);
 
+// Public API
 void print(char *message) {
   print_at(message, -1, -1);
 }
@@ -29,11 +31,10 @@ void print_at(char *message, int col, int row) {
   }
 }
 
-// Clear the entire screen
-// and positioning cursor to (0, 0)
+// Clear the entire screen and positioning cursor to (0, 0)
 void clear_screen() {
   int screen_size = MAX_COLS * MAX_ROWS;
-  char *screen = VIDEO_ADDRESS;
+  char *screen = (unsigned char*) VIDEO_ADDRESS;
 
   for (int i = 0; i < screen_size; i++) {
     screen[i * 2] = ' ';
@@ -42,6 +43,8 @@ void clear_screen() {
 
   set_cursor_offset(get_offset(0, 0));
 }
+
+// Private API
 
 // Print char at specified column and row
 int print_char(char character, int col, int row, char attribute) {

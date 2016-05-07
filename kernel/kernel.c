@@ -1,7 +1,6 @@
-void dummy_function() {
-}
+#include "../drivers/screen.h"
 
 void main() {
-  char* video_memory_ptr = 0xB8000;
-  *video_memory_ptr = 'X';
+  clear_screen();
+  print("Hello, World from screen driver");
 }

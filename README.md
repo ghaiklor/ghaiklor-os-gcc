@@ -9,23 +9,23 @@ So, I hope, there will be _ghaiklor-os-gcc_ and _ghaiklor-os-rustc_.
 ## Roadmap
 
 - Boot sector:
-- - Reads the kernel from disk into memory (**DONE**)
-- - Describes Global Descriptor Table (**DONE**)
-- - Switches to 32-bit Protected Mode (**DONE**)
-- - Gives execution to kernel (**DONE**)
+  - Reads the kernel from disk into memory (**DONE**)
+  - Describes Global Descriptor Table (**DONE**)
+  - Switches to 32-bit Protected Mode (**DONE**)
+  - Gives execution to kernel (**DONE**)
 - Kernel:
-- - Kernel entry in assembly, which calls extern main() in C (**DONE**)
-- - Kernel methods like _memory_copy_ (*IN PROGRESS*)
-- - Interrupt handling (_TODO_)
-- - Memory management: physical and virtual (_TODO_)
-- - DMA - Direct Memory Access (_TODO_)
-- - Process Management (_TODO_)
+  - Kernel entry in assembly, which calls extern main() in C (**DONE**)
+  - Kernel methods like _memory_copy_ (*IN PROGRESS*)
+  - Interrupt handling (_TODO_)
+  - Memory management: physical and virtual (_TODO_)
+  - DMA - Direct Memory Access (_TODO_)
+  - Process Management (_TODO_)
 - Drivers:
-- - _ports_ driver for low-level I/O functions (**DONE**)
-- - _screen_ driver (*IN PROGRESS*)
-- - _keyboard_ driver (_TODO_)
-- - _vfs_ driver (_TODO_)
-- - _vga_ driver (_TODO_)
+  - _ports_ driver for low-level I/O functions (**DONE**)
+  - _screen_ driver (*IN PROGRESS*)
+  - _keyboard_ driver (_TODO_)
+  - _vfs_ driver (_TODO_)
+  - _vga_ driver (_TODO_)
 
 ## Project Structure
 

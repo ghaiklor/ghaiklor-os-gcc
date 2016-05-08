@@ -1,5 +1,5 @@
-;; Routine for printing string in Real Mode
-;; Accepts pointer to memory where string is stored in bx
+;; Sub-routine for string printing
+;; Accepts pointer where string is stored in bx register
 
 [bits 16]
 

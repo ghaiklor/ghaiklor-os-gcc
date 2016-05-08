@@ -1,5 +1,8 @@
 ;; Global Descriptor Table
-;; Describes memory segments for the CPU
+;; It contains entries telling the CPU about memory segments
+;; In sake of simplicity I declare two memory segments:
+;; code segment and data segment
+;; both of them takes 4 Gb of overlapping memory
 ;; http://wiki.osdev.org/Global_Descriptor_Table
 
 [bits 16]

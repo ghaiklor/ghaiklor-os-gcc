@@ -21,7 +21,7 @@ os-image.bin: boot/boot.bin kernel/kernel.bin
 boot/boot.bin: boot/boot.asm
 	${ASM} $< -f bin -o $@
 
-kernel/kernel.bin: boot/kernel.o ${OBJ}
+kernel/kernel.bin: boot/kernel_entry.o ${OBJ}
 	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary
 
 %.o: %.c ${HEADERS}

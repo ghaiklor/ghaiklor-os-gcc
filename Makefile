@@ -1,6 +1,6 @@
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
-HEADERS = $(wildcard kernel/*.h drivers/*.h)
-OBJ = ${C_SOURCES:.c=.o}
+SOURCES = $(shell find kernel drivers -name '*.c')
+HEADERS = $(shell find kernel drivers -name '*.h')
+OBJ = ${SOURCES:.c=.o}
 
 ASM = nasm
 CC = x86_64-pc-elf-gcc

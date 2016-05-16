@@ -3,9 +3,8 @@ HEADERS = $(shell find kernel drivers -name '*.h')
 OBJ = ${SOURCES:.c=.o}
 
 ASM = nasm
-CC = x86_64-pc-elf-gcc
-LD = x86_64-pc-elf-ld
-GDB = gdb
+CC = i386-elf-gcc
+LD = i386-elf-ld
 
 all: os-image.bin
 
@@ -16,10 +15,6 @@ clean:
 	rm -rf *.bin *.dis *.o os-image.bin *.elf
 	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o
 
-debug: os-image.bin kernel/kernel.elf
-	qemu-system-i386 -s -fda os-image.bin &
-	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel/kernel.elf"
-
 os-image.bin: boot/boot.bin kernel/kernel.bin
 	cat $^ > os-image.bin
 
@@ -29,14 +24,11 @@ boot/boot.bin: boot/boot.asm
 kernel/kernel.bin: boot/kernel_entry.o ${OBJ}
 	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary
 
-kernel/kernel.elf: boot/kernel_entry.o ${OBJ}
-	${LD} -o $@ -Ttext 0x1000 $^
-
 %.o: %.c ${HEADERS}
-	${CC} -ffreestanding -c $< -o $@
+	${CC} -ffreestanding -std=c11 -c $< -o $@
 
 %.o: %.asm
-	${ASM} $< -f elf64 -o $@
+	${ASM} $< -f elf -o $@
 
 %.bin: %.asm
 	${ASM} $< -f bin -o $@

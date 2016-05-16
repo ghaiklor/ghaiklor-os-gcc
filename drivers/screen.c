@@ -2,7 +2,7 @@
 #include "screen.h"
 #include "../kernel/util.h"
 
-int print_char(char character, int col, int row, char attribute);
+int print_char(char character, int col, int row, int attribute);
 int handle_scrolling(int current_offset);
 int get_cursor_offset();
 void set_cursor_offset(int offset);
@@ -25,11 +25,11 @@ void print_at(char *message, int col, int row) {
     row = get_row_from_offset(offset);
   }
 
-  int i = 0;
-  while (message[i] != 0) {
-    offset = print_char(message[i++], col, row, WHITE_ON_BLACK);
+  while (*message) {
+    offset = print_char((char)*message, col, row, WHITE_ON_BLACK);
     row = get_row_from_offset(offset);
     col = get_col_from_offset(offset);
+    message++;
   }
 }
 
@@ -47,8 +47,8 @@ void clear_screen() {
 // Private API
 
 // Print char at specified column and row
-int print_char(char character, int col, int row, char attribute) {
-  unsigned char *video_memory_ptr = (unsigned char*) VIDEO_ADDRESS;
+int print_char(char character, int col, int row, int attribute) {
+  char *video_memory_ptr = (char*)VIDEO_ADDRESS;
 
   if (!attribute) {
     attribute = WHITE_ON_BLACK;
@@ -65,12 +65,12 @@ int print_char(char character, int col, int row, char attribute) {
     row = get_row_from_offset(row);
     offset = get_offset(0, row + 1);
   } else {
-    video_memory_ptr[offset] = character;
-    video_memory_ptr[offset + 1] = attribute;
-    offset += 2;
+    video_memory_ptr[offset++] = character;
+    video_memory_ptr[offset++] = attribute;
   }
 
-  offset = handle_scrolling(offset);
+  // FIXME: green line because of handle_scrolling()
+  // offset = handle_scrolling(offset);
   set_cursor_offset(offset);
   return offset;
 }

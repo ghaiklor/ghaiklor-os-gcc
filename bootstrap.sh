@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 banner() {
   echo "|------------------------------------------|"
   echo "|--------- ghaiklor-os bootstrap ----------|"

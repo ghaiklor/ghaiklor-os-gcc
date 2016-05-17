@@ -3,8 +3,13 @@ HEADERS = $(shell find kernel drivers -name '*.h')
 OBJ = ${SOURCES:.c=.o}
 
 ASM = nasm
-CC = i386-elf-gcc
-LD = i386-elf-ld
+CC = gcc
+LD = ld
+
+ifeq ($(shell uname -s),Darwin)
+	CC = i386-elf-gcc
+	LD = i386-elf-ld
+endif
 
 all: os-image.bin
 

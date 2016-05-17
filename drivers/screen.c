@@ -26,10 +26,10 @@ void print_at(char *message, int col, int row) {
   }
 
   while (*message) {
-    message++;
     offset = print_char((char)*message, col, row, WHITE_ON_BLACK);
     row = get_row_from_offset(offset);
     col = get_col_from_offset(offset);
+    message++;
   }
 }
 

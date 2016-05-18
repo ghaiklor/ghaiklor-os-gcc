@@ -22,7 +22,7 @@ So, I hope, there will be _ghaiklor-os-gcc_ and _ghaiklor-os-rustc_.
   - Process Management (_TODO_)
 - Drivers:
   - _ports_ driver for low-level I/O functions (**DONE**)
-  - _screen_ driver (*IN PROGRESS*)
+  - _screen_ driver (**DONE**)
   - _keyboard_ driver (_TODO_)
   - _vfs_ driver (_TODO_)
   - _vga_ driver (_TODO_)

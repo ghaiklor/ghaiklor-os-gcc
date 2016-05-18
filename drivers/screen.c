@@ -3,9 +3,8 @@
 #include "../kernel/util.h"
 
 int print_char(char character, int col, int row, int attribute);
-int handle_scrolling(int current_offset);
 int get_cursor_offset();
-void set_cursor_offset(int offset);
+int set_cursor_offset(int offset);
 int get_offset(int col, int row);
 int get_row_from_offset(int offset);
 int get_col_from_offset(int offset);
@@ -44,8 +43,6 @@ void clear_screen() {
   set_cursor_offset(get_offset(0, 0));
 }
 
-// Private API
-
 // Print char at specified column and row
 int print_char(char character, int col, int row, int attribute) {
   char *video_memory_ptr = (char*)VIDEO_ADDRESS;
@@ -69,32 +66,25 @@ int print_char(char character, int col, int row, int attribute) {
     video_memory_ptr[offset++] = attribute;
   }
 
-  // FIXME: green line because of handle_scrolling()
-  // offset = handle_scrolling(offset);
+  if (offset >= MAX_ROWS * MAX_COLS * 2) {
+    for (int i = 1; i < MAX_ROWS; i++) {
+      memory_copy(
+        (char*)(get_offset(0, i) + VIDEO_ADDRESS),
+        (char*)(get_offset(0, i - 1) + VIDEO_ADDRESS),
+        MAX_COLS * 2
+      );
+    }
+
+    char* last_line = (char*)(get_offset(0, MAX_ROWS - 1) + VIDEO_ADDRESS);
+    for (int i = 0; i < MAX_COLS * 2; i++) {
+      last_line[i] = 0;
+    }
+
+    offset -= 2 * MAX_COLS;
+  }
+
   set_cursor_offset(offset);
   return offset;
-}
-
-int handle_scrolling(int cursor_offset) {
-  if (cursor_offset < MAX_ROWS * MAX_COLS * 2) {
-    return cursor_offset;
-  }
-
-  for (int i = 1; i < MAX_ROWS; i++) {
-    memory_copy(
-      get_offset(0, i) + (char*) VIDEO_ADDRESS,
-      get_offset(0, i - 1) + (char*) VIDEO_ADDRESS,
-      MAX_COLS * 2
-    );
-  }
-
-  char* last_line = get_offset(0, MAX_ROWS - 1) + (char*) VIDEO_ADDRESS;
-  for (int i = 0; i < MAX_COLS * 2; i++) {
-    last_line[i] = 0;
-  }
-
-  cursor_offset -= 2 * MAX_COLS;
-  return cursor_offset;
 }
 
 // Get current cursor position
@@ -108,13 +98,15 @@ int get_cursor_offset() {
 }
 
 // Set cursor position based on offset in memory
-void set_cursor_offset(int offset) {
+int set_cursor_offset(int offset) {
   offset /= 2;
 
   port_byte_out(REG_SCREEN_CTRL, 14);
   port_byte_out(REG_SCREEN_DATA, (unsigned char)(offset >> 8));
   port_byte_out(REG_SCREEN_CTRL, 15);
   port_byte_out(REG_SCREEN_DATA, (unsigned char)(offset & 0xFF));
+
+  return offset * 2;
 }
 
 // Get offset from column and row number

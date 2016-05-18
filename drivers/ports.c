@@ -1,6 +1,5 @@
 // Low level port I/O functions
-// These functions are used by most
-// hardware drivers in our kernel
+// These functions are used by most hardware drivers in our kernel
 #include "ports.h"
 
 // Read a byte from the specified port

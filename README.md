@@ -15,13 +15,13 @@ So, I hope, there will be _ghaiklor-os-gcc_ and _ghaiklor-os-rustc_.
   - Gives execution to kernel (**DONE**)
 - Kernel:
   - Kernel entry in assembly, which calls extern main() in C (**DONE**)
+  - Low-level I/O functions: _port_byte_in_, _port_byte_out_ and similar (**DONE**)
   - Kernel methods like _memory_copy_ (*IN PROGRESS*)
   - Interrupt handling (_TODO_)
   - Memory management: physical and virtual (_TODO_)
   - DMA - Direct Memory Access (_TODO_)
   - Process Management (_TODO_)
 - Drivers:
-  - _ports_ driver for low-level I/O functions (**DONE**)
   - _screen_ driver (**DONE**)
   - _keyboard_ driver (_TODO_)
   - _vfs_ driver (_TODO_)

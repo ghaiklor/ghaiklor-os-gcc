@@ -1,5 +1,5 @@
-#include "ports.h"
 #include "screen.h"
+#include "../kernel/cpu/ports.h"
 #include "../kernel/util.h"
 
 int print_char(char character, int col, int row, int attribute);

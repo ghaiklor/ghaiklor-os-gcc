@@ -1,6 +1,3 @@
-#define __need_wint_t
-#define __need_wchar_t
-
 typedef signed char int8_t;
 typedef unsigned char uint8_t;
 typedef short int16_t;
@@ -113,5 +110,14 @@ typedef unsigned long long uintmax_t;
 #define INTMAX_C(val) INT64_C(val)
 #define UINTMAX_C(val) UINT64_C(val)
 
+#define LOW_8(address) (uint8_t)((address) & 0xFF)
+#define HIGH_8(address) (uint8_t)(((address) >> 8) & 0xFF)
+
 #define LOW_16(address) (uint16_t)((address) & 0xFFFF)
 #define HIGH_16(address) (uint16_t)(((address) >> 16) & 0xFFFF)
+
+#define LOW_32(address) (uint32_t)((address) & 0xFFFFFFFF)
+#define HIGH_32(address) (uint32_t)(((address) >> 32) & 0xFFFFFFFF)
+
+#define LOW_64(address) (uint64_t)((address) & 0xFFFFFFFFFFFFFFFF)
+#define HIGH_64(address) (uint64_t)(((address) >> 64) & 0xFFFFFFFFFFFFFFFF)

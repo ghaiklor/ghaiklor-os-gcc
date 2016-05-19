@@ -45,11 +45,9 @@ void clear_screen() {
 
 // Print char at specified column and row
 int print_char(char character, int col, int row, int attribute) {
-  char *video_memory_ptr = (char*)VIDEO_ADDRESS;
+  if (!attribute) attribute = WHITE_ON_BLACK;
 
-  if (!attribute) {
-    attribute = WHITE_ON_BLACK;
-  }
+  char *video_memory_ptr = (char*)VIDEO_ADDRESS;
 
   int offset;
   if (col >= 0 && row >= 0) {
@@ -59,7 +57,7 @@ int print_char(char character, int col, int row, int attribute) {
   }
 
   if (character == '\n') {
-    row = get_row_from_offset(row);
+    row = get_row_from_offset(offset);
     offset = get_offset(0, row + 1);
   } else {
     video_memory_ptr[offset++] = character;

@@ -1,6 +1,6 @@
-SOURCES = $(shell find kernel drivers -name '*.c')
-HEADERS = $(shell find kernel drivers -name '*.h')
-OBJ = ${SOURCES:.c=.o}
+SOURCES = $(shell find kernel drivers include -name '*.c')
+HEADERS = $(shell find kernel drivers include -name '*.h')
+OBJ = ${SOURCES:.c=.o kernel/cpu/interrupt.o}
 
 ASM = nasm
 CC = gcc

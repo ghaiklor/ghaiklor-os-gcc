@@ -1,5 +1,6 @@
 #include "../../include/stdint.h"
 
+// These functions are declared in interrupt.asm file
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -33,6 +34,7 @@ extern void isr29();
 extern void isr30();
 extern void isr31();
 
+// Structure for storing registers at the interrupt frame
 typedef struct {
   uint32_t ds;
   uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
@@ -40,5 +42,6 @@ typedef struct {
   uint32_t eip, cs, eflags, useresp, ss;
 } registers_t;
 
+// Public API
 void isr_install();
 void isr_handler(registers_t r);

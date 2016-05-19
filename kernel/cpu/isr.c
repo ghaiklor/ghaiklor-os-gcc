@@ -1,8 +1,13 @@
+// Implementation for Interrupt Service Routines
+// http://wiki.osdev.org/Interrupt_Service_Routines
+
 #include "isr.h"
 #include "idt.h"
 #include "../../drivers/screen.h"
 #include "../util.h"
 
+// Array of messages when some exception is occured
+// Its indexes are mapped to interrupt codes
 char *exception_messages[] = {
   "Division By Zero",
   "Debug",
@@ -41,6 +46,7 @@ char *exception_messages[] = {
   "Reserved"
 };
 
+// Maps ISR in interrupt.asm to gates in IDT
 void isr_install() {
   set_idt_gate(0, (uint32_t)isr0);
   set_idt_gate(1, (uint32_t)isr1);
@@ -78,6 +84,8 @@ void isr_install() {
   set_idt();
 }
 
+// Calls every time when some interrupt is occured
+// This function is available in interrupt.asm file via extern in asm
 void isr_handler(registers_t r) {
   char s[3];
 

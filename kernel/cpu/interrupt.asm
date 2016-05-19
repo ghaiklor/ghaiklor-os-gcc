@@ -1,5 +1,7 @@
+;; Make our isr_handler() from isr.c available here
 [extern isr_handler]
 
+;; Common stub which calls when any of interrupts are triggered
 isr_common_stub:
   pusha
   mov ax, ds
@@ -22,6 +24,8 @@ isr_common_stub:
   sti
   iret
 
+;; We need to make our procedures global
+;; So it became available in isr.c file for setting the gates
 global isr0
 global isr1
 global isr2
@@ -55,6 +59,9 @@ global isr29
 global isr30
 global isr31
 
+;; Implementations for gates
+;; Each of these implementations push data on the stack
+;; And jumps to our stub above
 isr0:
   cli
   push byte 0

@@ -1,3 +1,7 @@
+// Screen driver implementation
+// http://wiki.osdev.org/Printing_To_Screen
+// http://wiki.osdev.org/VGA_Hardware
+
 #include "screen.h"
 #include "../kernel/cpu/ports.h"
 #include "../kernel/util.h"
@@ -9,25 +13,29 @@ int get_offset(int col, int row);
 int get_row_from_offset(int offset);
 int get_col_from_offset(int offset);
 
-// Public API
+// Prints string at current position of the cursor
 void print(char *message) {
   print_at(message, -1, -1);
 }
 
+// Prints string at the specified position
 void print_at(char *message, int col, int row) {
   int offset;
+
   if (col >= 0 && row >= 0) {
     offset = get_offset(col, row);
   } else {
     offset = get_cursor_offset();
-    col = get_col_from_offset(offset);
-    row = get_row_from_offset(offset);
   }
 
   while (*message) {
-    offset = print_char((char)*message, col, row, WHITE_ON_BLACK);
-    row = get_row_from_offset(offset);
-    col = get_col_from_offset(offset);
+    offset = print_char(
+      (char)*message,
+      get_col_from_offset(offset),
+      get_row_from_offset(offset),
+      WHITE_ON_BLACK
+    );
+
     message++;
   }
 }
@@ -43,7 +51,9 @@ void clear_screen() {
   set_cursor_offset(get_offset(0, 0));
 }
 
-// Print char at specified column and row
+// Prints char at specified column and row
+// Writes direct into video memory
+// Handles scrolling and new-line character
 int print_char(char character, int col, int row, int attribute) {
   if (!attribute) attribute = WHITE_ON_BLACK;
 
@@ -65,6 +75,8 @@ int print_char(char character, int col, int row, int attribute) {
   }
 
   if (offset >= MAX_ROWS * MAX_COLS * 2) {
+    // In case, if we out of bounds
+    // Copy each line to a line above
     for (int i = 1; i < MAX_ROWS; i++) {
       memory_copy(
         (char*)(get_offset(0, i) + VIDEO_ADDRESS),
@@ -73,19 +85,26 @@ int print_char(char character, int col, int row, int attribute) {
       );
     }
 
+    // Clear the last line after all lines were copied
     char* last_line = (char*)(get_offset(0, MAX_ROWS - 1) + VIDEO_ADDRESS);
     for (int i = 0; i < MAX_COLS * 2; i++) {
       last_line[i] = 0;
     }
 
+    // Update current offset to (0, MAX_ROWS - 1)
     offset -= 2 * MAX_COLS;
   }
 
+  // Update cursor position after all calcuations
   set_cursor_offset(offset);
   return offset;
 }
 
 // Get current cursor position
+// Implementation based on low-level port I/O
+// Write to CTRL register 14 (0xE) and read Hi byte
+// Write to CTRL register 15 (0xF) and read Lo byte
+// Adding these leads to current offset of cursor in memory
 int get_cursor_offset() {
   port_byte_out(REG_SCREEN_CTRL, 14);
   int offset = port_byte_in(REG_SCREEN_DATA) << 8;
@@ -95,7 +114,10 @@ int get_cursor_offset() {
   return offset * 2;
 }
 
-// Set cursor position based on offset in memory
+// Set cursor position
+// The same implementation as in get_cursor_offset()
+// Write to CTRL register 14 (0xE) and write Hi byte to DATA register
+// Write to CTRL register 15 (0xF) and write Lo byte to DATA register
 int set_cursor_offset(int offset) {
   offset /= 2;
 

@@ -112,3 +112,6 @@ typedef unsigned long long uintmax_t;
 
 #define INTMAX_C(val) INT64_C(val)
 #define UINTMAX_C(val) UINT64_C(val)
+
+#define LOW_16(address) (uint16_t)((address) & 0xFFFF)
+#define HIGH_16(address) (uint16_t)(((address) >> 16) & 0xFFFF)

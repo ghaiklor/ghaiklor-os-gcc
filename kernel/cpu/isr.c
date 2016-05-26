@@ -3,8 +3,11 @@
 
 #include "isr.h"
 #include "idt.h"
+#include "ports.h"
 #include "../../drivers/screen.h"
 #include "../util.h"
+
+isr_t interrupt_handlers[256];
 
 // Array of messages when some exception is occured
 // Its indexes are mapped to interrupt codes
@@ -81,6 +84,37 @@ void isr_install() {
   set_idt_gate(30, (uint32_t)isr30);
   set_idt_gate(31, (uint32_t)isr31);
 
+  // Remap the PIC
+  // http://wiki.osdev.org/8259_PIC#Initialisation
+  port_byte_out(0x20, 0x11);
+  port_byte_out(0xA0, 0x11);
+  port_byte_out(0x21, 0x20);
+  port_byte_out(0xA1, 0x28);
+  port_byte_out(0x21, 0x04);
+  port_byte_out(0xA1, 0x02);
+  port_byte_out(0x21, 0x01);
+  port_byte_out(0xA1, 0x01);
+  port_byte_out(0x21, 0x0);
+  port_byte_out(0xA1, 0x0);
+
+  // Install IRQs into our IDT
+  set_idt_gate(32, (uint32_t)irq0);
+  set_idt_gate(33, (uint32_t)irq1);
+  set_idt_gate(34, (uint32_t)irq2);
+  set_idt_gate(35, (uint32_t)irq3);
+  set_idt_gate(36, (uint32_t)irq4);
+  set_idt_gate(37, (uint32_t)irq5);
+  set_idt_gate(38, (uint32_t)irq6);
+  set_idt_gate(39, (uint32_t)irq7);
+  set_idt_gate(40, (uint32_t)irq8);
+  set_idt_gate(41, (uint32_t)irq9);
+  set_idt_gate(42, (uint32_t)irq10);
+  set_idt_gate(43, (uint32_t)irq11);
+  set_idt_gate(44, (uint32_t)irq12);
+  set_idt_gate(45, (uint32_t)irq13);
+  set_idt_gate(46, (uint32_t)irq14);
+  set_idt_gate(47, (uint32_t)irq15);
+
   set_idt();
 }
 
@@ -95,4 +129,22 @@ void isr_handler(registers_t r) {
   print("\n");
   print(exception_messages[r.int_no]);
   print("\n");
+}
+
+void register_interrupt_handler(uint8_t n, isr_t handler) {
+  interrupt_handlers[n] = handler;
+}
+
+// Calls every time when hardware interrupt is occured
+void irq_handler(registers_t r) {
+  if (r.int_no >= 40) {
+    port_byte_out(0xA0, 0x20);
+  }
+
+  port_byte_out(0x20, 0x20);
+
+  if (interrupt_handlers[r.int_no] != 0) {
+    isr_t handler = interrupt_handlers[r.int_no];
+    handler(r);
+  }
 }

@@ -202,7 +202,7 @@ void print_letter(uint8_t scancode) {
         print("key up ");
         print_letter(scancode - 0x80);
       } else {
-        print("Unknown key up")
+        print("Unknown key up");
       }
 
       break;

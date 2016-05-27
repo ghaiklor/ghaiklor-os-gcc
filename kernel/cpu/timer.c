@@ -1,3 +1,6 @@
+// Implementation for Programmable Interval Timer
+// http://wiki.osdev.org/Programmable_Interval_Timer
+
 #include "timer.h"
 #include "isr.h"
 #include "../../drivers/screen.h"
@@ -5,6 +8,8 @@
 
 uint32_t tick = 0;
 
+// Callback for timer
+// Triggers each time when hardware interrupt occurred
 static void timer_callback(registers_t regs) {
   tick++;
 
@@ -16,6 +21,8 @@ static void timer_callback(registers_t regs) {
   print("\n");
 }
 
+// Initialize PIC
+// http://wiki.osdev.org/Programmable_Interval_Timer#PIT_Channel_0_Example_Code
 void init_timer(uint32_t freq) {
   register_interrupt_handler(IRQ0, timer_callback);
 

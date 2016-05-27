@@ -1,3 +1,4 @@
+#include "../drivers/keyboard.h"
 #include "../drivers/screen.h"
 #include "util.h"
 #include "cpu/isr.h"
@@ -9,5 +10,7 @@ void main() {
   isr_install();
 
   __asm__ __volatile__("sti");
+
   init_timer(50);
+  init_keyboard();
 }

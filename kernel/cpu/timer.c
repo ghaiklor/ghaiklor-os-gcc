@@ -4,7 +4,8 @@
 #include "timer.h"
 #include "isr.h"
 #include "../../drivers/screen.h"
-#include "../util.h"
+#include "../../libc/mem.h"
+#include "../../libc/string.h"
 
 uint32_t tick = 0;
 

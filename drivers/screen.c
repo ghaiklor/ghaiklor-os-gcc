@@ -4,7 +4,7 @@
 
 #include "screen.h"
 #include "../kernel/cpu/ports.h"
-#include "../kernel/util.h"
+#include "../libc/mem.h"
 
 int print_char(char character, int col, int row, int attribute);
 int get_cursor_offset();

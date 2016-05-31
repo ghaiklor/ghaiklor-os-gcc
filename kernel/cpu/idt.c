@@ -2,7 +2,6 @@
 // http://wiki.osdev.org/Interrupt_Descriptor_Table
 
 #include "idt.h"
-#include "../util.h"
 
 // Register gate in Interrupt Descriptor Table
 // It stores in declared in idt.h variable called idt

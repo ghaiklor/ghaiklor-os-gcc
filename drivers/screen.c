@@ -3,7 +3,7 @@
 // http://wiki.osdev.org/VGA_Hardware
 
 #include "screen.h"
-#include "../kernel/cpu/ports.h"
+#include "../cpu/ports.h"
 #include "../libc/mem.h"
 
 int print_char(char character, int col, int row, int attribute);

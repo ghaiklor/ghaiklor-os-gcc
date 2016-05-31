@@ -1,4 +1,4 @@
-#include "../../include/stdint.h"
+#include "../include/stdint.h"
 
 // These functions are declared in interrupt.asm file
 extern void isr0();

@@ -1,7 +1,7 @@
 #include "keyboard.h"
 #include "screen.h"
-#include "../kernel/cpu/ports.h"
-#include "../kernel/cpu/isr.h"
+#include "../cpu/ports.h"
+#include "../cpu/isr.h"
 
 static void keyboard_callback(registers_t regs) {
   uint8_t scancode = port_byte_in(0x60);

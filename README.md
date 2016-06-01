@@ -6,6 +6,12 @@ It's just a simple operation system created in educational purposes.
 Repository is suffixed with gcc because I'm planning to write another one simple OS with Rust.
 So, I hope, there will be _ghaiklor-os-gcc_ and _ghaiklor-os-rustc_.
 
+## Demo
+
+| Hello, World                                                                                                |
+| ----------------------------------------------------------------------------------------------------------- |
+| ![OS](https://cloud.githubusercontent.com/assets/3625244/15702861/fcdd8794-27ea-11e6-8e42-1700f8ba3905.gif) |
+
 ## Roadmap
 
 - Boot sector:

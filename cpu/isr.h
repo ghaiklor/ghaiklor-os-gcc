@@ -82,4 +82,6 @@ typedef void (*isr_t)(registers_t);
 // Public API
 void isr_install();
 void isr_handler(registers_t r);
+void irq_install();
+void irq_handler(registers_t r);
 void register_interrupt_handler(uint8_t n, isr_t handler);

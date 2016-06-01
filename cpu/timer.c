@@ -3,9 +3,7 @@
 
 #include "timer.h"
 #include "isr.h"
-#include "../drivers/screen.h"
-#include "../libc/mem.h"
-#include "../libc/string.h"
+#include "ports.h"
 
 uint32_t tick = 0;
 
@@ -13,13 +11,6 @@ uint32_t tick = 0;
 // Triggers each time when hardware interrupt occurred
 static void timer_callback(registers_t regs) {
   tick++;
-
-  print("Tick: ");
-
-  char tick_ascii[256];
-  itoa(tick, tick_ascii);
-  print(tick_ascii);
-  print("\n");
 }
 
 // Initialize PIC

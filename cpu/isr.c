@@ -4,6 +4,8 @@
 #include "isr.h"
 #include "idt.h"
 #include "ports.h"
+#include "timer.h"
+#include "../drivers/keyboard.h"
 #include "../drivers/screen.h"
 #include "../libc/mem.h"
 #include "../libc/string.h"
@@ -132,8 +134,11 @@ void isr_handler(registers_t r) {
   print("\n");
 }
 
-void register_interrupt_handler(uint8_t n, isr_t handler) {
-  interrupt_handlers[n] = handler;
+void irq_install() {
+  __asm__ __volatile__("sti");
+
+  init_timer(50);
+  init_keyboard();
 }
 
 // Calls every time when hardware interrupt is occured
@@ -148,4 +153,8 @@ void irq_handler(registers_t r) {
     isr_t handler = interrupt_handlers[r.int_no];
     handler(r);
   }
+}
+
+void register_interrupt_handler(uint8_t n, isr_t handler) {
+  interrupt_handlers[n] = handler;
 }

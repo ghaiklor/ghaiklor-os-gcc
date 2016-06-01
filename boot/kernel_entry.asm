@@ -8,7 +8,11 @@
 ;; When object files will be linked together
 ;; this call will be translated to the address of the main()
 
+global _start
+
 [bits 32]
-[extern main]
-call main
-jmp $
+[extern kernel_main]
+
+_start:
+  call kernel_main
+  jmp $

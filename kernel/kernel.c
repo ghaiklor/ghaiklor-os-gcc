@@ -3,7 +3,7 @@
 #include "../drivers/screen.h"
 #include "../libc/string.h"
 
-void main() {
+void kernel_main() {
   clear_screen();
   isr_install();
   irq_install();

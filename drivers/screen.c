@@ -40,6 +40,13 @@ void print_at(char *message, int col, int row) {
   }
 }
 
+void print_backspace() {
+  int offset = get_cursor_offset() - 2;
+  int row = get_row_from_offset(offset);
+  int col = get_col_from_offset(offset);
+  print_char(0x08, col, row, WHITE_ON_BLACK);
+}
+
 // Clear the entire screen and positioning cursor to (0, 0)
 void clear_screen() {
   for (int row = 0; row < MAX_ROWS; row++) {

@@ -1,16 +1,24 @@
-#include "../drivers/keyboard.h"
-#include "../drivers/screen.h"
-#include "../libc/mem.h"
+#include "kernel.h"
 #include "../cpu/isr.h"
-#include "../cpu/idt.h"
-#include "../cpu/timer.h"
+#include "../drivers/screen.h"
+#include "../libc/string.h"
 
 void main() {
   clear_screen();
   isr_install();
+  irq_install();
 
-  __asm__ __volatile__("sti");
+  print("Type something, it will go through the kernel\n");
+  print("Type END to halt the CPU\n> ");
+}
 
-  init_timer(50);
-  init_keyboard();
+void user_input(char *input) {
+  if (strcmp(input, "END") == 0) {
+    print("Stopping the CPU. Bye!\n");
+    __asm__ __volatile__("hlt");
+  }
+
+  print("You said: ");
+  print(input);
+  print("\n> ");
 }

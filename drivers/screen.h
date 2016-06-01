@@ -17,4 +17,5 @@
 // Public API
 void print(char *message);
 void print_at(char *message, int col, int row);
+void print_backspace();
 void clear_screen();

@@ -12,26 +12,30 @@ So, I hope, there will be _ghaiklor-os-gcc_ and _ghaiklor-os-rustc_.
   - Reads the kernel from disk into memory (**DONE**)
   - Describes Global Descriptor Table (**DONE**)
   - Switches to 32-bit Protected Mode (**DONE**)
+  - Checks if CPU support 64-bit Long Mode and switches into (**DONE**)
+  - In case, if 64-bit Long Mode isn't supported, fallback into 32-bit (**DONE**)
   - Gives execution to kernel (**DONE**)
 - Kernel:
-  - Kernel entry in assembly, which calls extern main() in C (**DONE**)
+  - Kernel entry in assembly, which calls extern kernel_main() in C (**DONE**)
   - Low-level I/O functions: _port_byte_in_, _port_byte_out_ and similar (**DONE**)
-  - Kernel methods like _memory_copy_ (*IN PROGRESS*)
-  - Interrupt handling (_TODO_)
-  - Memory management: physical and virtual (_TODO_)
-  - DMA - Direct Memory Access (_TODO_)
-  - Process Management (_TODO_)
+  - Interrupt Descriptor Table (**DONE**)
+  - Interrupt Service Routines and their mapping to IDT (**DONE**)
+  - Handling Interrupt Requests (IRQ) (**DONE**)
+  - Handling IRQ0 of Programmable Interval Timer (**DONE**)
 - Drivers:
-  - _screen_ driver (**DONE**)
-  - _keyboard_ driver (_TODO_)
-  - _vfs_ driver (_TODO_)
-  - _vga_ driver (_TODO_)
+  - _screen_ driver implements printing to the screen (**DONE**)
+  - _keyboard_ driver listen for IRQ1 interrupt and handle it (**DONE**)
+- Shell:
+  - Implement simple echo shell (**DONE**)
 
 ## Project Structure
 
 - [__boot__](./boot) - source code related to boot sector
+- [__cpu__](./cpu) - source code related to specific CPU architecture
 - [__drivers__](./drivers) - source code related to drivers implementation
+- [__include__](./include) - header files for common cases
 - [__kernel__](./kernel) - source code related to kernel
+- [__libc__](./libc) - source code of common libraries
 
 ## Makefile
 
@@ -45,8 +49,8 @@ Nothing else, simple.
 
 _kernel.bin_ is compiled via cross-compiler _gcc_ and _ld_ that you must install.
 Take a look into [Development Environment](#development-environment) section.
-After cross-compiler is installed, we can take sources from _kernel_ and _drivers_ folders recursively.
-All *.c* files are compiled via `gcc -ffreestanding -c <FILE> -o <OBJ>`.
+After cross-compiler is installed, we can take sources from _cpu_, _drivers_, _include_, _kernel_ and _libc_ folders recursively.
+All *.c* files are compiled via `gcc`.
 Compiled object files are used for compiling _kernel.bin_ then, via _ld_ -
 `ld -o kernel/kernel.bin -Ttext 0x1000 <OBJ_FILES> --oformat binary`.
 
@@ -59,7 +63,7 @@ I'd wrote `bootstrap.sh` script, that you can run.
 It will install all the needed dependencies for your host machine.
 
 ```shell
-./bootstrap.sh
+bash bootstrap.sh
 ```
 
 ## License

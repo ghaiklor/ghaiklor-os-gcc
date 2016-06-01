@@ -1,3 +1,8 @@
+// Implementation for keyboard
+// When key is pressed, keyboard controller triggers IRQ1
+// http://wiki.osdev.org/Interrupts#From_the_keyboard.27s_perspective
+// We need to handle this interrupt and do something
+
 #include "keyboard.h"
 #include "screen.h"
 #include "../cpu/ports.h"
@@ -135,6 +140,7 @@ const char sc_ascii[] = {
   ' '
 };
 
+// Calls each time when key is pressed
 static void keyboard_callback(registers_t regs) {
   // The PIC leaves us the scancode in port 0x60
   uint8_t scancode = port_byte_in(0x60);
@@ -157,6 +163,7 @@ static void keyboard_callback(registers_t regs) {
   UNUSED(regs);
 }
 
+// Maps keyboard_callback() to IRQ1 interrupt
 void init_keyboard() {
   register_interrupt_handler(IRQ1, keyboard_callback);
 }

@@ -86,8 +86,8 @@ int print_char(char character, int col, int row, int attribute) {
     // Copy each line to a line above
     for (int i = 1; i < MAX_ROWS; i++) {
       memory_copy(
-        (char*)(get_offset(0, i) + VIDEO_ADDRESS),
-        (char*)(get_offset(0, i - 1) + VIDEO_ADDRESS),
+        (uint8_t*)(get_offset(0, i) + VIDEO_ADDRESS),
+        (uint8_t*)(get_offset(0, i - 1) + VIDEO_ADDRESS),
         MAX_COLS * 2
       );
     }

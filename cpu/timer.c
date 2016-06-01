@@ -4,6 +4,7 @@
 #include "timer.h"
 #include "isr.h"
 #include "ports.h"
+#include "../libc/function.h"
 
 uint32_t tick = 0;
 
@@ -11,6 +12,7 @@ uint32_t tick = 0;
 // Triggers each time when hardware interrupt occurred
 static void timer_callback(registers_t regs) {
   tick++;
+  UNUSED(regs);
 }
 
 // Initialize PIC

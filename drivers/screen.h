@@ -1,3 +1,5 @@
+#include "../include/stdint.h"
+
 // Address in memory which is mapped to video
 #define VIDEO_ADDRESS 0xB8000
 

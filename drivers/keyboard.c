@@ -2,6 +2,7 @@
 #include "screen.h"
 #include "../cpu/ports.h"
 #include "../cpu/isr.h"
+#include "../libc/function.h"
 #include "../libc/string.h"
 #include "../kernel/kernel.h"
 
@@ -152,6 +153,8 @@ static void keyboard_callback(registers_t regs) {
     append(key_buffer, letter);
     print(str);
   }
+
+  UNUSED(regs);
 }
 
 void init_keyboard() {

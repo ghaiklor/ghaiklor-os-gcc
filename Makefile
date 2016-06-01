@@ -1,10 +1,11 @@
-SOURCES = $(shell find cpu kernel drivers include libc -name '*.c')
-HEADERS = $(shell find cpu kernel drivers include libc -name '*.h')
+SOURCES = $(shell find cpu drivers include kernel libc -name '*.c')
+HEADERS = $(shell find cpu drivers include kernel libc -name '*.h')
 OBJ = ${SOURCES:.c=.o cpu/interrupt.o}
 
 ASM = nasm
 CC = gcc
 LD = ld
+CFLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions -m32 -std=c11
 
 ifeq ($(shell uname -s),Darwin)
 	CC = i386-elf-gcc
@@ -18,7 +19,7 @@ run: all
 
 clean:
 	rm -rf *.bin *.dis *.o os-image.bin *.elf
-	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o
+	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o cpu/*.o libc/*.o
 
 os-image.bin: boot/boot.bin kernel/kernel.bin
 	cat $^ > os-image.bin
@@ -30,7 +31,7 @@ kernel/kernel.bin: boot/kernel_entry.o ${OBJ}
 	${LD} -o $@ -Ttext 0x1000 $^ --oformat binary
 
 %.o: %.c ${HEADERS}
-	${CC} -ffreestanding -std=c11 -c $< -o $@
+	${CC} ${CFLAGS} -c $< -o $@
 
 %.o: %.asm
 	${ASM} $< -f elf -o $@

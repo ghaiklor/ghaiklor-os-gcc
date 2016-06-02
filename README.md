@@ -109,7 +109,7 @@ And the last two bytes 511 and 512 are bootable signature which we are filling w
 
 Done! We have our bootable device and can replace our `jmp $` with any code you like.
 
-[Boot Sector](./boot/boot.asm)
+[Boot Sector Implementation](./boot/boot.asm)
 
 #### Real Mode
 
@@ -156,6 +156,7 @@ jmp CODE_SEG:init_pm
 ```
 
 [Implementation for switching to PM](./boot/pm/switch_to_pm.asm)
+
 [Global Descriptor Table](./boot/pm/gdt.asm)
 
 But, we can go further...
@@ -177,6 +178,7 @@ Before switching into Long Mode, we **must** check if CPU supports this mode.
 In case, if CPU doesn't support Long Mode, we need to fallback to Protected Mode.
 
 [Detect if Long Mode supports](./boot/lm/detect_lm.asm)
+
 [If so, switch to Long Mode](./boot/lm/switch_to_lm.asm)
 
 ## License

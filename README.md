@@ -273,6 +273,58 @@ You easily can follow the methods that I'm calling from it.
 
 [Kernel Entry in C](./kernel/kernel.c)
 
+### Building
+
+#### Building the Boot Sector
+
+That is the simplest part.
+
+We need to build `boot/boot.bin` image in raw binary format.
+To do so, we call `nasm` assembler with special flags.
+
+```shell
+nasm boot/boot.asm -f bin -o boot/boot.bin
+```
+
+It results into raw binary format that you can run via qemu.
+
+At this step, we have working compiled boot sector.
+
+#### Building the Kernel
+
+We need to build the all sources from all folders recursively, except the `boot` folder.
+
+All C files are compiled to object files via `gcc` and Assembly files via `nasm`:
+
+```shell
+gcc -g -ffreestanding -Wall -Wextra -fno-exceptions -m32 -std=c11 -c <SOURCE> -o <OBJ_FILE>
+nasm <SOURCE> -f elf -o <OBJ_FILE>
+```
+
+It results into all needed object files for linking to raw binary format.
+All what's left to do is link them together via `ld`:
+
+```shell
+ld -o kernel/kernel.bin -Ttext 0x1000 kernel/kernel_entry.o <OBJ_FILES> --oformat binary
+```
+
+Note that `kernel/kernel_entry.o` at first place since we have an issue with calling the `kernel_main()`.
+This way, we guarantee that first instruction will be called from our `boot/kernel_entry.asm`.
+
+After all, we have compiled kernel image in raw binary format.
+
+#### Building the OS image
+
+Since, our boot sector and kernel is raw binary formats, we can just concatenate them.
+
+```shell
+cat boot/boot.bin kernel/kernel.bin > os-image.bin
+```
+
+Now, we can run `os-image.bin` via `qemu-system-i386`.
+BIOS trying to locate bootable sector, find out our `boot/boot.bin` and sees signature.
+Starts executing our Assembly code at `boot/boot.bin` which loads our `kernel/kernel.bin` via INT 13,2 into memory.
+
 ## License
 
 The MIT License (MIT)

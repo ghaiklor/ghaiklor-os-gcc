@@ -242,6 +242,37 @@ You can navigate through [boot sources](./boot) and try to get how it works.
 
 #### Kernel Entry in Assembly
 
+When we are calling instruction by address, we can got a few problems.
+We can't sure, that instruction by address is a `kernel_main()`.
+Solution is simple.
+
+We can write a sub-routine that is attached to the start of the kernel code.
+This sub-routine call extern function of our kernel - `kernel_main()`.
+When object files will be linked together, this call will be translated into call of our `kernel_main()`.
+
+```asm
+global _start
+
+[bits 32]
+[extern kernel_main]
+
+_start:
+  call kernel_main
+  jmp $
+```
+
+[Kernel Entry Implementation](./boot/kernel_entry.asm)
+
+#### Kernel Entry in C
+
+At this step, we have an entry-point to our `kernel_main()` method.
+And that is our entry-point for entire kernel.
+
+I think, is boring to explain how `#include` works and what happens in our `kernel_main()`.
+You easily can follow the methods that I'm calling from it.
+
+[Kernel Entry in C](./kernel/kernel.c)
+
 ## License
 
 The MIT License (MIT)

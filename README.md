@@ -3,6 +3,9 @@
 This is not a **REAL** operation system.
 It's just a simple operation system created in educational purposes.
 
+The main goal I'm following is to learn how OS is working from the ground up.
+Starting from the own boot sector, hardware and software interrupts, own drivers.
+
 Repository is suffixed with gcc because I'm planning to write another one simple OS with Rust.
 So, I hope, there will be _ghaiklor-os-gcc_ and _ghaiklor-os-rustc_.
 
@@ -71,6 +74,38 @@ It will install all the needed dependencies for your host machine.
 ```shell
 bash bootstrap.sh
 ```
+
+## How it works?
+
+### BIOS
+
+When a computer is switched on or reset, it runs through a series of diagnostics called POST - Power-On-Self-Test.
+This sequence culminates in locating a bootable device, such as a floppy, cdrom or a hard disk.
+
+A device is bootable if it carries a boot sector with the byte sequence `0x55`, `0xAA` in bytes 511 and 512 respectively.
+When the BIOS finds such a boot sector, it is loaded into memory at `0x0000:0x7C00`.
+
+### Boot Sector
+
+A simple implementation of bootable device:
+
+```asm
+jmp $
+
+times 510 - ($-$$) db 0
+dw 0xAA55
+```
+
+`$ - $$` results in `CURRENT_POINTER - START_POINTER`.
+That way we are calculating how long our boot record is.
+Afterwards, we are substract 510 from it and filling with zeros, getting the 512 bytes boot record with boot sector signature.
+
+For instance, we have `$ - $$` equal to 100.
+So, we have `510 - 100 = 410` free bytes.
+We are filling these 410 bytes with zeros.
+And the last two bytes 511 and 512 are bootable signature which we are filling with `dw 0xAA55`.
+
+Done! We have our bootable device and can replace our `jmp $` with any code you like.
 
 ## License
 

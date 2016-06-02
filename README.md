@@ -181,6 +181,65 @@ In case, if CPU doesn't support Long Mode, we need to fallback to Protected Mode
 
 [If so, switch to Long Mode](./boot/lm/switch_to_lm.asm)
 
+#### Loading the Kernel
+
+All these modes are great, but we can't write an operating system in 512 bytes.
+So, our boot sector **must** know how to load our compiled kernel from hard disk.
+
+When we are in Real Mode, we can use BIOS interrupts for reading from the disk.
+In our case, is `INT 13,2 - Read Disk Sectors`.
+
+How to use it?
+
+```asm
+;; al = number of sectors to read (1 - 128)
+;; ch = track/cylinder number
+;; cl = sector number
+;; dh = head number
+;; dl = drive number
+;; bx = pointer to buffer
+mov ah, 0x02
+mov al, 15
+mov ch, 0x00
+mov cl, 0x02
+mov dh, 0x00
+mov dl, 0
+mov bx, KERNEL_OFFSET_IN_MEMORY
+int 0x13
+```
+
+This code results into reading from hard disk into address `KERNEL_OFFSET_IN_MEMORY`.
+It reads 15 sectors starting from the second one and stores it by address `KERNEL_OFFSET_IN_MEMORY`.
+
+Since our compiled OS image is a concatenation of boot sector and kernel,
+and we know that our boot sector is 512 bytes, we can be sure, that our kernel starts in second sector.
+
+When reading is successfully completed, we can call instruction at our `KERNEL_OFFSET_IN_MEMORY` and give execution to the kernel.
+
+```asm
+call KERNEL_OFFSET_IN_MEMORY
+jmp $
+```
+
+[Implementation for Disk Read](./boot/disk/disk_read.asm)
+
+#### Summary about Boot Sector
+
+We can draw a line here about our boot sector.
+The flow is simple:
+
+- BIOS detects our image as bootable since [boot signature](#boot-signature);
+- Load the kernel from disk into memory via [INT 13,2](#loading-the-kernel);
+- Switch to [Protected Mode](#protected-mode);
+- Check if we can switch into [Long Mode](#long-mode) with fallback into Protected Mode;
+- Give execution to kernel via simple `call` instruction;
+
+At this step, our boot sector finished its work and starts working with the kernel.
+
+### Kernel
+
+#### Kernel Entry in Assembly
+
 ## License
 
 The MIT License (MIT)

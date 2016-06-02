@@ -87,6 +87,8 @@ When the BIOS finds such a boot sector, it is loaded into memory at `0x0000:0x7C
 
 ### Boot Sector
 
+#### Boot Signature
+
 A simple implementation of bootable device:
 
 ```asm
@@ -106,6 +108,76 @@ We are filling these 410 bytes with zeros.
 And the last two bytes 511 and 512 are bootable signature which we are filling with `dw 0xAA55`.
 
 Done! We have our bootable device and can replace our `jmp $` with any code you like.
+
+[Boot Sector](./boot/boot.asm)
+
+#### Real Mode
+
+At the beginning our code is running in Real Mode.
+
+Real Mode is a simplistic 16-bit mode that is present on all x86 processors.
+Real Mode was the first x86 mode design and was used by many early operating systems.
+For compatibility purposes, all x86 processors begin execution in Real Mode.
+
+What's bad and good in Real Mode?
+
+Cons
+- Less than 1 MB of RAM is available for use.
+- There is no hardware-based memory protection (GDT), nor virtual memory.
+- There is no built in security mechanisms to protect against buggy or malicious applications.
+- The default CPU operand length is only 16 bits.
+- The memory addressing modes provided are more restrictive than other CPU modes.
+- Accessing more than 64k requires the use of segment register that are difficult to work with.
+
+Pros
+- The BIOS installs device drivers to control devices and handle interrupt.
+- BIOS functions provide operating systems with a advanced collection of low level API functions.
+- Memory access is faster due to the lack of descriptor tables to check and smaller registers.
+
+Due to the many limitations and problems that Real Mode has, we need to switch to Protected Mode.
+
+#### Protected Mode
+
+Protected Mode is the main operating mode of modern Intel processors since the 80286.
+It allows working with several virtual address spaces, each of which has a maximum of 4 GB of addressable memory.
+
+Since CPU initialized by the BIOS starts in Real Mode, switching to Protected Mode prevents you from using most of the BIOS interrupts.
+Before switching to Protected Mode, you have to disable interrupts, including NMI, enable A20 line and load Global Descriptor Table.
+
+Algorithm for switching to Protected Mode:
+
+```asm
+cli
+lgdt [gdt_descriptor]
+mov eax, cr0
+or eax, 0x1
+mov cr0, eax
+jmp CODE_SEG:init_pm
+```
+
+[Implementation for switching to PM](./boot/pm/switch_to_pm.asm)
+[Global Descriptor Table](./boot/pm/gdt.asm)
+
+But, we can go further...
+
+#### Long Mode
+
+What is long mode and why set it up?
+
+Since the introduction of the x86-64 processors a new mode has been introduced as well, which is called Long Mode.
+Long Mode basically consists out of two sub modes which are the actual 64-bit mode and compatibility mode (32-bit).
+
+What we are interested in is simply the 64-bit mode as this mode provides a lot of new features such as:
+
+- Registers being extended to 64-bit (rax, rcx, rdx, etc...);
+- Eight new general-purpose registers (r8 - r15);
+- Eight new multimedia registers (xmm8 - xmm15);
+
+Before switching into Long Mode, we **must** check if CPU supports this mode.
+In case, if CPU doesn't support Long Mode, we need to fallback to Protected Mode.
+
+[Detect if Long Mode supports](./boot/lm/detect_lm.asm)
+[If so, switch to Long Mode](./boot/lm/switch_to_lm.asm)
 
 ## License
 

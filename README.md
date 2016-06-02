@@ -236,6 +236,8 @@ The flow is simple:
 
 At this step, our boot sector finished its work and starts working with the kernel.
 
+You can navigate through [boot sources](./boot) and try to get how it works.
+
 ### Kernel
 
 #### Kernel Entry in Assembly

@@ -323,7 +323,10 @@ cat boot/boot.bin kernel/kernel.bin > os-image.bin
 
 Now, we can run `os-image.bin` via `qemu-system-i386`.
 BIOS trying to locate bootable sector, find out our `boot/boot.bin` and sees signature.
-Starts executing our Assembly code at `boot/boot.bin` which loads our `kernel/kernel.bin` via INT 13,2 into memory.
+Starts executing our Assembly code at `boot/boot.bin` which loads our `kernel/kernel.bin` via INT 13,2 into memory and executes it.
+
+That's how it all works together.
+Feel free to navigate through the [project](#project-structure), thanks :smiley_cat:
 
 ## License
 
